@@ -10,10 +10,10 @@ import { handleMiddlewarePipeline } from "https://deno.land/x/waggon/mod.ts";
 
 serve(
     handleMiddlewarePipeline([
-        (_req, _conn, ctx) => {
+        (req, conn, ctx) => {
             const value = "value from first handler";
             ctx.value = value;
-            return new Response(value);
+            return ctx.next(req, conn, ctx);
         },
         (_req, _conn, ctx) => {
             const firstValue = ctx!.value;
