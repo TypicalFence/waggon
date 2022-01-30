@@ -4,14 +4,13 @@ import {
 } from "https://deno.land/std@0.123.0/http/server.ts";
 
 export interface MiddlewareContext extends Record<string, unknown> {
-    next?: MiddlewareHandler;
-    response: Response;
+    next: MiddlewareHandler<MiddlewareContext>|Handler;
 }
 
-export type MiddlewareHandler = (
+export type MiddlewareHandler<C extends MiddlewareContext> = (
     request: Request,
     connInfo: ConnInfo,
-    ctx: MiddlewareContext,
+    ctx: C,
 ) => Response | Promise<Response>;
 
-export type MiddlewarePipeline = Array<MiddlewareHandler | Handler>;
+export type MiddlewarePipeline<C extends MiddlewareContext> = Array<MiddlewareHandler<C> | Handler>;
